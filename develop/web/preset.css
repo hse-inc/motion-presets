@@ -1,0 +1,19 @@
+/* develop — 動きのプリセット（接頭辞 pf-）。説明は ../PRESET.md
+ * 使い方: 写真（img や画像を入れた要素）に class="pf-develop" を付け、.is-on を足すと、
+ *   白く飛んでぼやけ色のない状態から、フィルムが現像されるように色と形が浮かび上がる */
+.pf-develop {
+  --pf-dur: 2200ms;
+  --pf-delay: 0ms;
+  filter: brightness(3.2) contrast(0.25) saturate(0) blur(3px);
+}
+.pf-develop.is-on {
+  animation: pf-develop var(--pf-dur) ease-out var(--pf-delay) both;
+}
+@keyframes pf-develop {
+  0%   { filter: brightness(3.2) contrast(0.25) saturate(0) blur(3px); }
+  45%  { filter: brightness(1.7) contrast(0.6) saturate(0.4) blur(1px); }
+  100% { filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-develop, .pf-develop.is-on { filter: none; animation: none; }
+}

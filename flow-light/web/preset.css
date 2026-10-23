@@ -1,0 +1,45 @@
+/* flow-light — 動きのプリセット（接頭辞 pf-）。説明は ../PRESET.md
+ * 使い方: class="pf-flow-light" の要素（縦に長い図・リストの親。position: relative になる）に .is-on を足すと、
+ *   縦の線が上から伸び、そのあと線の上を光が上から下へ流れ続ける */
+.pf-flow-light {
+  --pf-x: 1.05em;
+  --pf-top: 1em;
+  --pf-bottom: 1.2em;
+  --pf-line-w: 2px;
+  --pf-light-w: 4px;
+  --pf-line: #7b5cff;
+  --pf-light: #fff;
+  --pf-dur: 1.8s;
+  --pf-delay: 960ms;
+  position: relative;
+}
+.pf-flow-light::before {
+  content: "";
+  position: absolute;
+  left: var(--pf-x); top: var(--pf-top); bottom: var(--pf-bottom);
+  width: var(--pf-line-w);
+  border-radius: 999px;
+  background: var(--pf-line);
+  transform-origin: 50% 0;
+  transform: scaleY(0);
+}
+.pf-flow-light::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--pf-x) - (var(--pf-light-w) - var(--pf-line-w)) / 2); top: var(--pf-top); bottom: var(--pf-bottom);
+  width: var(--pf-light-w);
+  border-radius: 999px;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(180deg, transparent, var(--pf-light), transparent) 0 0 / 100% 28% no-repeat;
+}
+.pf-flow-light.is-on::before { transform: scaleY(1); transition: transform 660ms cubic-bezier(0.22, 1, 0.36, 1) 300ms; }
+.pf-flow-light.is-on::after { opacity: 1; transition: opacity 180ms ease var(--pf-delay); animation: pf-flow-light var(--pf-dur) cubic-bezier(0.65, 0, 0.35, 1) var(--pf-delay) infinite; }
+@keyframes pf-flow-light {
+  from { background-position: 0 -40%; }
+  to   { background-position: 0 140%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-flow-light::before, .pf-flow-light.is-on::before { transform: scaleY(1); transition: none; }
+  .pf-flow-light::after, .pf-flow-light.is-on::after { animation: none; opacity: 0; transition: none; }
+}

@@ -1,0 +1,24 @@
+/* twinkle — 動きのプリセット（接頭辞 pf-）。説明は ../PRESET.md
+ * 使い方: class="pf-twinkle" の要素（星形に切り抜かれる。大きさは --pf-size）に .is-on を足すと、
+ *   小さく透明な状態から大きく光って回り、また消えることを繰り返す。位置と待ちをばらして散らす */
+.pf-twinkle {
+  --pf-dur: 2.2s;
+  --pf-delay: 0s;
+  --pf-size: 14px;
+  --pf-color: #ffd24d;
+  --pf-turn: 45deg;
+  display: inline-block;
+  width: var(--pf-size);
+  aspect-ratio: 1;
+  background: var(--pf-color);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  opacity: 0;
+}
+.pf-twinkle.is-on { animation: pf-twinkle var(--pf-dur) ease-in-out var(--pf-delay) infinite; }
+@keyframes pf-twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.3) rotate(0); }
+  45%      { opacity: 1; transform: scale(1) rotate(var(--pf-turn)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-twinkle, .pf-twinkle.is-on { animation: none; opacity: 0.8; transform: none; }
+}

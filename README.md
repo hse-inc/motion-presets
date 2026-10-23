@@ -10,11 +10,11 @@
 | `animations/<name>/` | プリセット 1 件 = フォルダ 1 つ。階層は 1 段だけ（`animations/<name>/<環境>/` はこの下の環境フォルダ） |
 | `<name>/PRESET.md` | 分類（機械が読む表）・使いどころ・印象・パラメータ・使い方・注意 |
 | `<name>/web/` | web の実装（`preset.css`・見本の `demo.html`） |
-| `<name>/preview.gif` | 見本の動き（`tools/shoot_preview.mjs` で撮る）。必須 |
-| `<name>/capture.gif` | 実サイトでの使用例。任意 |
+| `<name>/preview.gif` | 見本の動き（`tools/shoot_preview.mjs` で撮る）。事例・サンプルとも必須 |
+| `<name>/capture.gif` | 実サイトでの使用例。事例では原則として付ける（撮れないときは ⚠）。サンプルは不要 |
 | `animations/_template/` | 新規作成の雛形（索引の対象外） |
-| `animations/INDEX.md` | 一覧・ジャンル別・質感別（自動生成） |
-| `animations/gallery.html` | 動くカードの見本帳（自動生成）。選んでコピーすると、DNA.md の「動き」列や指示にそのまま貼れる |
+| `animations/INDEX.md` | 「事例」と「【事例なしサンプル】」の 2 節に分けた一覧・ジャンル別・質感別（自動生成） |
+| `animations/gallery.html` | 動くカードの見本帳（自動生成）。上に「事例（実際に使った動き）」、下に「【事例なしサンプル】」。絞り込みは両方に効く。選んでコピーすると、DNA.md の「動き」列や指示にそのまま貼れる |
 
 - 名前は英小文字・数字・ハイフン（例: `word-drop`）
 - 環境の追加規則: `fv`（fv-kit の fx.js 用）・`premiere`（Premiere 用）は、同じ階層に `animations/<name>/fv/`・`animations/<name>/premiere/` を足し、PRESET.md の「環境」にその名前を書く。今は `web/` だけ
@@ -26,12 +26,12 @@
 4. 実装を AI へ頼むときは、gallery の「選んだものをコピー」の文をそのまま貼る（1 行 1 件。`適用箇所:` に「p2 の見出し」などを書き足す）
 
 ## 2. プリセット化の手順
-1. `tools/new_preset.sh <name> --by "<実装者>" --from "<案件/元ファイル>"` で雛形を作る（出典の 2 つは必須。既存の名前は上書きしない）
+1. `tools/new_preset.sh <name> --from "<使ったサイト名>"` で雛形を作る（実案件で使っていない見本は `--from` の代わりに `--sample`＝出典「事例なし」。古い `--by` は廃止。既存の名前は上書きしない）
 2. `PRESET.md` の〔 〕を書く（分類の表は項目名・形を変えない）
 3. `web/preset.css` と `web/demo.html` に移植する。パラメータは `--pf-*` で受ける。元ファイルは編集せず、コピーして整理する
 4. `node tools/shoot_preview.mjs <name>` で `preview.gif` を撮る
-5. 実サイトでの使用例があれば `node tools/shoot_preview.mjs <name> --page=<html> --selector=<css> …` で `capture.gif` を撮る（詳細は `tools/shoot_preview.mjs` の冒頭）
-6. `python3 tools/build_anim_index.py` で `INDEX.md` と `gallery.html` を作り直す。出典が空・preview が無いと ✕（`--allow-missing-preview` で preview だけ警告に下げられる）
+5. 事例は実サイトでの使用例を撮る（サンプルは不要）。`node tools/shoot_preview.mjs <name> --page=<html> --selector=<css> …` で `capture.gif` を撮る（詳細は `tools/shoot_preview.mjs` の冒頭）
+6. `python3 tools/build_anim_index.py` で `INDEX.md` と `gallery.html` を作り直す。出典が空・出典がサイト名だけでない・preview が無いと ✕（`--allow-missing-preview` で preview だけ警告に下げられる）。事例で capture が無いと ⚠
 - `demo.html` は `window.demoReset()` / `window.demoPlay()` を持つ（雛形のまま）。`?manual` が付くと自動再生しない（撮影ツール用）
 
 ## 3. 質感の語彙
@@ -46,6 +46,10 @@
 - **流れ** — 一定方向へ流れ続ける
 - **ズーム** — 小さい状態から等倍へ寄る、手前に来る
 - **ワイプ** — 帯・面が横切って、現れる・場面が替わる
+- **波紋** — 輪が広がって消える
+- **きらめき** — 星・点が光って瞬く
+- **光** — 光の筋が線や面の上を走る
+- **現像** — 白く飛んだ状態から、色と形が浮かび上がる
 
 ## 4. ジャンル・環境
 | 項目 | 値 | 意味 |
@@ -65,18 +69,21 @@
 - パラメータは CSS カスタムプロパティ `--pf-*`（`--pf-dur`・`--pf-delay` など）で受け、PRESET.md の表に「デフォルト / 推奨レンジ / 効き方」を書く
 - 動かす合図は `.is-on`（kit の `.rv` → `.is-on` と同じ）。待ち（delay）は `.is-on` 側にだけ書く（AGENTS.md 2.8。`check_css.py --strict` が見る）
 - `prefers-reduced-motion: reduce` で動きを止める指定を必ず入れる
-- 出典（実装者・案件・元ファイル）は必須。実装者が判別できないときは「要確認」と書き、あとで直す
+- **出典は「使ったサイト名」だけ**（例: `青空交通`）。実装者・元ファイル・行番号は書かない。実案件で使っていない見本は `事例なし`（＝【事例なしサンプル】）。出典は必須（空は ✕）
 - 注意: `capture.gif` は先方の案件ページが映る。kit を外へ配布する前に、映っている会社名・素材を確認する
 
-## 6. 基本セット（v2.9）
-> 定番の動き 14 件。出典は「kit 基本セット（v2.9）」。見本のみ（capture.gif は無い）。名前で呼べる。
-| ジャンル | プリセット |
+## 6. 事例と【事例なしサンプル】
+> 見本帳・INDEX は「事例（実際に使った動き）」を上、「【事例なしサンプル】」を下に分けて表示する。分けるのは出典の欄だけ（`事例なし` ならサンプル）。名前で呼べるのはどちらも同じ。
+- **事例**（過去案件で実際に使った動き。出典＝使ったサイト名。capture.gif あり）: `fade-up`・`float`・`jelly`・`slide-left`・`slide-right`・`word-drop`・`card-slap` ＋ 追加の 13 件（`reel`・`ripple`・`flow-light`・`spin-pop`・`twinkle`・`ln-marker`・`band-paint`・`stamp`・`drive-by`・`develop`・`marquee`・`iris`・`glitch`）。一覧は `INDEX.md`
+- **【事例なしサンプル】**（実案件ではまだ使っていない基本の動き。capture なし）: `fade-in`・`zoom-in`・`pop`・`bounce-in`・`stagger`・`mask-reveal`・`fade-out-up`・`shake`・`sway`・`wipe`
+- 実案件で使ったら、PRESET.md の出典を `事例なし` からサイト名に直し、capture.gif を撮って事例へ移す
+| ジャンル | 主なプリセット |
 |---|---|
-| 登場 | `fade-in`・`slide-left`・`slide-right`・`zoom-in`・`pop`・`bounce-in`・`stagger`・`mask-reveal`（先の 3 件 `fade-up`・`word-drop`・`card-slap` も登場） |
+| 登場 | `fade-up`・`fade-in`・`slide-left`・`slide-right`・`zoom-in`・`pop`・`bounce-in`・`stagger`・`mask-reveal`・`word-drop`・`card-slap`・`spin-pop`・`ln-marker`・`band-paint`・`stamp`・`develop`・`iris` |
 | 退場 | `fade-out-up`（`.is-on` を足すと消える。他は `.is-on`＝出る） |
-| 強調 | `pop`・`jelly`・`shake`（`jelly`・`shake` は表示済みの要素が `.is-on` で 1 回動く） |
-| ループ | `float`（上下 6px・±1.5°・3.6 秒・往復）・`sway`（上の端を支点に揺れる） |
-| 遷移 | `wipe`（色の面が覆って場面 a → b が入れ替わる） |
+| 強調 | `jelly`・`shake`（表示済みの要素が `.is-on` で 1 回動く）・`pop`・`ripple`・`twinkle`・`glitch` ほか |
+| ループ | `float`・`sway`・`reel`・`ripple`・`flow-light`・`twinkle`・`drive-by`・`marquee` |
+| 遷移 | `wipe`（色の面が覆って場面が入れ替わる）・`iris`（円形に広がって次の写真へ） |
 
 ## 7. 案件へ反映する
 - **コマンド**: `tools/apply_preset.sh <project> <page> <name> [--at "適用箇所"] [--set --pf-dur=0.5s …] [--dry-run]`
@@ -91,4 +98,4 @@
 ## 8. 公開用に書き出す
 - `python3 tools/build_anim_index.py --public <出力先>`（出力先は animations/ の外）
 - 出力先に index.html（＝見本帳）・各プリセットの PRESET.md・web/・preview.gif・capture.gif（あれば）・INDEX.md・README.md・robots.txt（Disallow: /）。`_template` は含めない。index.html に `noindex,nofollow`
-- 案件の情報（案件のフォルダ名など）が混ざると ✕ で止まる。**公開前に人が確かめること**: `capture.gif` に映る社名・素材、出典の文に出る先方の社名
+- 案件の情報（案件のフォルダ名など）が混ざると ✕ で止まる。**公開前に人が確かめること**: `capture.gif` に映る社名・素材（出典に使ったサイトの社名が出ることは責任者承認済み 2026-10-23）

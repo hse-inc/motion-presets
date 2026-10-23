@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>spin-pop 見本</title>
+<link rel="stylesheet" href="preset.css">
+<style>
+  /* 見本用の枠（プリセットの一部ではない） */
+  html, body { margin: 0; height: 100%; font-family: system-ui, "Hiragino Sans", sans-serif; color: #1a1a2e; }
+  body { background: #f4f1ea; }
+  .stage { height: 100%; display: flex; gap: 22px; align-items: center; justify-content: center; }
+  .ic { width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: 30px; background: linear-gradient(135deg, #7b5cff, #b9a7ff); box-shadow: 0 6px 14px rgb(60 40 160 / 0.3); }
+</style>
+</head>
+<body>
+<div class="stage"><div class="ic pf-spin-pop" data-demo>★</div><div class="ic pf-spin-pop" data-demo style="--pf-delay: 140ms">♪</div><div class="ic pf-spin-pop" data-demo style="--pf-delay: 280ms">✓</div></div>
+<script>
+/* 見本の再生制御（撮影ツール tools/shoot_preview.mjs が使う）
+ *   通常: .is-on を付けて 2.0 秒見せ、0.4 秒外してループ再生
+ *   ?manual を付けると自動再生しない。撮影ツールが demoReset() → demoPlay() を呼ぶ */
+(function () {
+  var targets = document.querySelectorAll('[data-demo]');
+  window.demoReset = function () { targets.forEach(function (t) { t.classList.remove('is-on'); }); };
+  window.demoPlay = function () { targets.forEach(function (t) { t.classList.add('is-on'); }); };
+  if (/[?&]manual\b/.test(location.search)) return;
+  // 見せる時間を長く・空白は 0.4 秒だけ（空のカードが壊れて見えないように）
+  function loop() { window.demoPlay(); setTimeout(function () { window.demoReset(); setTimeout(loop, 400); }, 2000); }
+  setTimeout(loop, 300);
+})();
+</script>
+</body>
+</html>

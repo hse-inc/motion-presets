@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>glitch 見本</title>
+<link rel="stylesheet" href="preset.css">
+<style>
+  /* 見本用の枠（プリセットの一部ではない） */
+  html, body { margin: 0; height: 100%; font-family: system-ui, "Hiragino Sans", sans-serif; color: #1a1a2e; }
+  body { background: #1b1f4a; }
+  .stage { height: 100%; display: grid; place-items: center; }
+  .btn { min-height: 54px; padding: 0 34px; font-size: 22px; font-weight: 700; letter-spacing: 0.06em; border: 3px solid #fff200; border-radius: 8px; color: #fff200; background: #333ca8; }
+</style>
+</head>
+<body>
+<div class="stage"><a class="btn pf-glitch" data-demo data-text="エントリー"><span class="pf-noise" aria-hidden="true"></span><span class="pf-t">エントリー</span></a></div>
+<script>
+/* 見本の再生制御（撮影ツール tools/shoot_preview.mjs が使う）
+ *   通常: .is-on を付けて 2.0 秒見せ、0.4 秒外してループ再生
+ *   ?manual を付けると自動再生しない。撮影ツールが demoReset() → demoPlay() を呼ぶ */
+(function () {
+  var targets = document.querySelectorAll('[data-demo]');
+  window.demoReset = function () { targets.forEach(function (t) { t.classList.remove('is-on'); }); };
+  window.demoPlay = function () { targets.forEach(function (t) { t.classList.add('is-on'); }); };
+  if (/[?&]manual\b/.test(location.search)) return;
+  // 見せる時間を長く・空白は 0.4 秒だけ（空のカードが壊れて見えないように）
+  function loop() { window.demoPlay(); setTimeout(function () { window.demoReset(); setTimeout(loop, 400); }, 2000); }
+  setTimeout(loop, 300);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+/* marquee — 動きのプリセット（接頭辞 pf-）。説明は ../PRESET.md
+ * 使い方: <div class="pf-marquee"><div class="pf-track"><span>WORD ・ WORD ・ </span><span>WORD ・ WORD ・ </span></div></div>
+ *   同じ文字列の組を 2 つ並べる。親に .is-on を足すと、大きな英字の帯が横へ流れ続ける（逆向きは .pf-marquee--rev）。輪郭文字にするなら .pf-marquee--outline */
+.pf-marquee {
+  --pf-speed: 48s;
+  --pf-size: 120px;
+  --pf-color: #24364f;
+  --pf-opacity: 0.32;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: 1;
+  font-size: var(--pf-size);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--pf-color);
+  opacity: var(--pf-opacity);
+}
+.pf-marquee .pf-track { display: flex; width: max-content; }
+.pf-marquee .pf-track > * { flex: 0 0 auto; }
+.pf-marquee--outline { color: transparent; -webkit-text-stroke: 1.5px var(--pf-color); }
+.pf-marquee.is-on .pf-track { animation: pf-marquee var(--pf-speed) linear infinite; }
+.pf-marquee--rev.is-on .pf-track { animation-direction: reverse; }
+@keyframes pf-marquee { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .pf-marquee.is-on .pf-track { animation: none; transform: none; }
+}

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>drive-by 見本</title>
+<link rel="stylesheet" href="preset.css">
+<style>
+  /* 見本用の枠（プリセットの一部ではない） */
+  html, body { margin: 0; height: 100%; font-family: system-ui, "Hiragino Sans", sans-serif; color: #1a1a2e; }
+  body { background: #cfe8f7; }
+  .stage { height: 100%; display: grid; align-items: end; }
+  .road { height: 180px; background: linear-gradient(#cfe8f7 0 58%, #7fb96a 58% 66%, #6e6e78 66%); }
+  svg { display: block; }
+</style>
+</head>
+<body>
+<div class="stage"><div class="road pf-drive-by" data-demo>
+  <span class="pf-v" style="--pf-x0:-40%;--pf-x1:110%;--pf-w:34%;--pf-b:18%;--pf-t:4.2s;--pf-d:-1.2s"><svg viewBox="0 0 120 60"><rect x="4" y="6" width="112" height="40" rx="8" fill="#ffb000"/><rect x="12" y="14" width="22" height="14" rx="2" fill="#dff3ff"/><rect x="40" y="14" width="22" height="14" rx="2" fill="#dff3ff"/><rect x="68" y="14" width="22" height="14" rx="2" fill="#dff3ff"/><rect x="96" y="14" width="14" height="22" rx="2" fill="#dff3ff"/><circle cx="30" cy="48" r="8" fill="#2b2b33"/><circle cx="92" cy="48" r="8" fill="#2b2b33"/></svg></span>
+  <span class="pf-v pf-flip" style="--pf-x0:110%;--pf-x1:-30%;--pf-w:22%;--pf-b:4%;--pf-t:3.4s;--pf-d:-0.4s"><svg viewBox="0 0 90 44"><path d="M4 30l8-14h46l14 14h12v8H4z" fill="#e0457b"/><rect x="16" y="19" width="16" height="9" fill="#dff3ff"/><rect x="38" y="19" width="16" height="9" fill="#dff3ff"/><circle cx="24" cy="38" r="6" fill="#2b2b33"/><circle cx="68" cy="38" r="6" fill="#2b2b33"/></svg></span>
+</div></div>
+<script>
+/* 見本の再生制御（撮影ツール tools/shoot_preview.mjs が使う）
+ *   通常: .is-on を付けたまま動かし続ける（常に動く動きのため）
+ *   ?manual を付けると自動再生しない。撮影ツールが demoReset() → demoPlay() を呼ぶ */
+(function () {
+  var targets = document.querySelectorAll('[data-demo]');
+  window.demoReset = function () { targets.forEach(function (t) { t.classList.remove('is-on'); }); };
+  window.demoPlay = function () { targets.forEach(function (t) { t.classList.add('is-on'); }); };
+  if (/[?&]manual\b/.test(location.search)) return;
+  // 見せる時間を長く・空白は 0.4 秒だけ（空のカードが壊れて見えないように）
+  setTimeout(window.demoPlay, 300);
+})();
+</script>
+</body>
+</html>

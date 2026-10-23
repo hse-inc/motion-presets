@@ -1,0 +1,43 @@
+/* ln-marker — 動きのプリセット（接頭辞 pf-）。説明は ../PRESET.md
+ * 使い方: <p class="pf-ln-marker"><span class="pf-ln" style="--c:0">1 行目</span><span class="pf-ln" style="--c:1">2 行目</span></p>
+ * 親に .is-on を足すと、行ごとにマーカーが左から右へ走り、通り過ぎる途中で文字が現れ、マーカーは右へ抜けて消える */
+.pf-ln-marker {
+  --pf-dur: 600ms;
+  --pf-step: 110ms;
+  --pf-delay: 600ms;
+  --pf-bar: #1fae7a;
+  --pf-ink: #1a1a2e;
+  --pf-ease: cubic-bezier(0.65, 0, 0.35, 1);
+}
+.pf-ln-marker .pf-ln {
+  display: block;
+  position: relative;
+  color: transparent;
+}
+.pf-ln-marker .pf-ln::after {
+  content: "";
+  position: absolute;
+  left: -0.15em; right: -0.15em; top: 0.15em; bottom: 0.15em;
+  z-index: 1;
+  background: var(--pf-bar);
+  border-radius: 3px;
+  transform: scaleX(0);
+  pointer-events: none;
+}
+.pf-ln-marker.is-on .pf-ln {
+  animation: pf-ln-text 1ms linear calc(var(--c, 0) * var(--pf-step) + var(--pf-delay) + var(--pf-dur) * 0.5) both;
+}
+.pf-ln-marker.is-on .pf-ln::after {
+  animation: pf-ln-marker var(--pf-dur) var(--pf-ease) calc(var(--c, 0) * var(--pf-step) + var(--pf-delay)) both;
+}
+@keyframes pf-ln-text { to { color: var(--pf-ink); } }
+@keyframes pf-ln-marker {
+  0%   { transform: scaleX(0); transform-origin: 0 50%; }
+  48%  { transform: scaleX(1); transform-origin: 0 50%; }
+  52%  { transform: scaleX(1); transform-origin: 100% 50%; }
+  100% { transform: scaleX(0); transform-origin: 100% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-ln-marker .pf-ln, .pf-ln-marker.is-on .pf-ln { color: var(--pf-ink); animation: none; }
+  .pf-ln-marker .pf-ln::after, .pf-ln-marker.is-on .pf-ln::after { display: none; animation: none; }
+}

@@ -1,0 +1,28 @@
+/* reel — 動きのプリセット（接頭辞 pf-）。説明は ../PRESET.md
+ * 使い方: <div class="pf-reel"><div class="pf-track"> 写真 × n ＋ 同じ写真 × n（1 周ぶんをもう 1 組） </div></div>
+ * 親（.pf-reel）に .is-on を足すと、写真の帯が止まらず横に流れ続ける（既定は右から左。左から右は .pf-reel--ltr） */
+.pf-reel {
+  --pf-h: 6.5em;
+  --pf-speed: 16s;
+  --pf-gap: 10px;
+  position: relative;
+  height: var(--pf-h);
+  overflow: hidden;
+}
+.pf-reel .pf-track { display: flex; width: max-content; height: 100%; }
+/* 幅は読み込み前から決める（iPhone の Safari は幅 0 のまま始まる）。間は margin で持ち、半分ちょうどで 1 周になる */
+.pf-reel .pf-img {
+  flex: 0 0 auto;
+  width: calc(var(--pf-h) * 4 / 3);
+  height: var(--pf-h);
+  margin-right: var(--pf-gap);
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 0.3em 0.8em rgb(0 0 0 / 0.18);
+}
+.pf-reel.is-on .pf-track { animation: pf-reel var(--pf-speed) linear infinite; }
+.pf-reel--ltr.is-on .pf-track { animation-direction: reverse; }
+@keyframes pf-reel { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .pf-reel.is-on .pf-track { animation: none; transform: none; }
+}
