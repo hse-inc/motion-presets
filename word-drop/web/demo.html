@@ -19,16 +19,16 @@
 </div>
 <script>
 /* 見本の再生制御（撮影ツール tools/shoot_preview.mjs が使う）
- *   通常: 2.4 秒ごとに .is-on を付け外ししてループ再生
+ *   通常: .is-on を付けて 2.4 秒見せ、0.4 秒外してループ再生
  *   ?manual を付けると自動再生しない。撮影ツールが demoReset() → demoPlay() を呼ぶ */
 (function () {
   var targets = document.querySelectorAll('[data-demo]');
   window.demoReset = function () { targets.forEach(function (t) { t.classList.remove('is-on'); }); };
   window.demoPlay = function () { targets.forEach(function (t) { t.classList.add('is-on'); }); };
   if (/[?&]manual\b/.test(location.search)) return;
-  var on = false;
-  function tick() { on = !on; on ? window.demoPlay() : window.demoReset(); }
-  setTimeout(function () { tick(); setInterval(tick, 2400); }, 300);
+  // 見せる時間を長く・空白は 0.4 秒だけ（空のカードが壊れて見えないように）
+  function loop() { window.demoPlay(); setTimeout(function () { window.demoReset(); setTimeout(loop, 400); }, 2400); }
+  setTimeout(loop, 300);
 })();
 </script>
 </body>
