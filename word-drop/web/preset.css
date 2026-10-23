@@ -1,0 +1,25 @@
+/* word-drop — 動きのプリセット（接頭辞 pf-）。説明は ../PRESET.md
+ * 元: 青空交通 motion.css の w-drop。見出しを語ごとに <span class="pf-w" style="--c:0"> で区切り、
+ * 親（.pf-word-drop）に .is-on を足すと 1 語ずつ落ちて着地でぽよんと弾む */
+.pf-word-drop {
+  --pf-dur: 720ms;
+  --pf-step: 130ms;
+  --pf-delay: 150ms;
+  --pf-drop: 140%;
+  --pf-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pf-word-drop .pf-w { display: inline-block; opacity: 0; }
+.pf-word-drop.is-on .pf-w {
+  opacity: 1;
+  animation: pf-word-drop var(--pf-dur) var(--pf-ease) calc(var(--c, 0) * var(--pf-step) + var(--pf-delay)) both;
+}
+@keyframes pf-word-drop {
+  0%   { transform: translateY(calc(var(--pf-drop) * -1)) rotate(-14deg); opacity: 0; }
+  45%  { transform: translateY(6%) rotate(4deg) scale(1.08, 0.86); opacity: 1; }
+  65%  { transform: translateY(-10%) rotate(-2deg) scale(0.96, 1.06); }
+  82%  { transform: translateY(2%) scale(1.02, 0.98); }
+  100% { transform: none; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-word-drop .pf-w, .pf-word-drop.is-on .pf-w { opacity: 1; animation: none; transform: none; }
+}

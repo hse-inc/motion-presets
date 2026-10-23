@@ -1,0 +1,37 @@
+/* mask-reveal — 動きのプリセット（接頭辞 pf-）。説明は ../PRESET.md
+ * 使い方: <div class="pf-mask-reveal"><span>中身</span></div>。.is-on を足すと色の帯が左から右へ払い、中身（直下の子）が現れる */
+.pf-mask-reveal {
+  --pf-dur: 700ms;
+  --pf-bar: var(--color-accent, #e8792f);
+  --pf-delay: 0ms;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+.pf-mask-reveal > * { opacity: 0; }
+.pf-mask-reveal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--pf-bar);
+  transform: translateX(-101%);
+}
+.pf-mask-reveal.is-on > * {
+  animation: pf-mask-reveal-in var(--pf-dur) linear var(--pf-delay) both;
+}
+.pf-mask-reveal.is-on::after {
+  animation: pf-mask-reveal-bar var(--pf-dur) cubic-bezier(0.65, 0, 0.35, 1) var(--pf-delay) both;
+}
+@keyframes pf-mask-reveal-in {
+  0%, 49.9% { opacity: 0; }
+  50%, 100% { opacity: 1; }
+}
+@keyframes pf-mask-reveal-bar {
+  0%   { transform: translateX(-101%); }
+  50%  { transform: translateX(0); }
+  100% { transform: translateX(101%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-mask-reveal > *, .pf-mask-reveal.is-on > * { opacity: 1; animation: none; }
+  .pf-mask-reveal::after, .pf-mask-reveal.is-on::after { display: none; animation: none; }
+}

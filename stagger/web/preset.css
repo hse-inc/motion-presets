@@ -1,0 +1,21 @@
+/* stagger — 動きのプリセット（接頭辞 pf-）。説明は ../PRESET.md
+ * 使い方: 親に class="pf-stagger"、子に style="--c: 0"（0 から順に）。親に .is-on を足すと子が時間差で下から出る */
+.pf-stagger {
+  --pf-dur: 500ms;
+  --pf-step: 100ms;
+  --pf-rise: 24px;
+  --pf-delay: 0ms;
+  --pf-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pf-stagger > * {
+  opacity: 0;
+  transform: translateY(var(--pf-rise));
+}
+.pf-stagger.is-on > * {
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--pf-dur) ease calc(var(--pf-delay) + var(--c, 0) * var(--pf-step)), transform var(--pf-dur) var(--pf-ease) calc(var(--pf-delay) + var(--c, 0) * var(--pf-step));
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-stagger > *, .pf-stagger.is-on > * { opacity: 1; transform: none; transition: none; }
+}

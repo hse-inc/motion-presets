@@ -1,0 +1,17 @@
+/* fade-out-up — 動きのプリセット（接頭辞 pf-）。説明は ../PRESET.md
+ * 使い方: class="pf-fade-out-up" の要素は最初から表示されている。.is-on を足すと、上へ持ち上がりながら消える（.is-on＝退場） */
+.pf-fade-out-up {
+  --pf-dur: 500ms;
+  --pf-rise: 24px;
+  --pf-delay: 0ms;
+  --pf-ease: cubic-bezier(0.4, 0, 1, 1);
+}
+.pf-fade-out-up.is-on {
+  opacity: 0;
+  transform: translateY(calc(var(--pf-rise) * -1));
+  pointer-events: none;
+  transition: opacity var(--pf-dur) ease var(--pf-delay), transform var(--pf-dur) var(--pf-ease) var(--pf-delay);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-fade-out-up.is-on { transform: none; transition: none; }
+}

@@ -1,0 +1,14 @@
+/* fade-in — 動きのプリセット（接頭辞 pf-）。説明は ../PRESET.md
+ * 使い方: class="pf-fade-in" の要素に .is-on を足すと、その場でフェードして出る */
+.pf-fade-in {
+  --pf-dur: 600ms;
+  --pf-delay: 0ms;
+  opacity: 0;
+}
+.pf-fade-in.is-on {
+  opacity: 1;
+  transition: opacity var(--pf-dur) ease var(--pf-delay);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-fade-in, .pf-fade-in.is-on { opacity: 1; transition: none; }
+}

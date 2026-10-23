@@ -1,0 +1,23 @@
+/* jelly — 動きのプリセット（接頭辞 pf-）。説明は ../PRESET.md
+ * 使い方: class="pf-jelly" の要素は最初から表示されている。.is-on を足した瞬間に 1 回、ぷよぷよ揺れる
+ * 注意: transform を使うので、同じ要素の別の transform（出現の動き）と同時には使わず、親子で分けるか順に足す */
+.pf-jelly {
+  --pf-dur: 800ms;
+  --pf-power: 1;
+  --pf-delay: 0ms;
+  display: inline-block;
+}
+.pf-jelly.is-on {
+  animation: pf-jelly var(--pf-dur) ease-in-out var(--pf-delay) both;
+}
+@keyframes pf-jelly {
+  0%   { transform: scale(1, 1); }
+  25%  { transform: scale(calc(1 + 0.25 * var(--pf-power)), calc(1 - 0.25 * var(--pf-power))); }
+  45%  { transform: scale(calc(1 - 0.2 * var(--pf-power)), calc(1 + 0.2 * var(--pf-power))); }
+  62%  { transform: scale(calc(1 + 0.12 * var(--pf-power)), calc(1 - 0.12 * var(--pf-power))); }
+  80%  { transform: scale(calc(1 - 0.05 * var(--pf-power)), calc(1 + 0.05 * var(--pf-power))); }
+  100% { transform: scale(1, 1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-jelly, .pf-jelly.is-on { animation: none; transform: none; }
+}

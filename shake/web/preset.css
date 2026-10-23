@@ -1,0 +1,22 @@
+/* shake — 動きのプリセット（接頭辞 pf-）。説明は ../PRESET.md
+ * 使い方: class="pf-shake" の要素は最初から表示されている。.is-on を足した瞬間に 1 回、左右に震える */
+.pf-shake {
+  --pf-dur: 500ms;
+  --pf-amp: 8px;
+  --pf-delay: 0ms;
+}
+.pf-shake.is-on {
+  animation: pf-shake var(--pf-dur) ease-in-out var(--pf-delay) both;
+}
+@keyframes pf-shake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(calc(var(--pf-amp) * -1)); }
+  30% { transform: translateX(var(--pf-amp)); }
+  45% { transform: translateX(calc(var(--pf-amp) * -0.7)); }
+  60% { transform: translateX(calc(var(--pf-amp) * 0.7)); }
+  75% { transform: translateX(calc(var(--pf-amp) * -0.4)); }
+  90% { transform: translateX(calc(var(--pf-amp) * 0.4)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-shake, .pf-shake.is-on { animation: none; transform: none; }
+}

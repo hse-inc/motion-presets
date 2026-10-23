@@ -1,0 +1,18 @@
+/* sway — 動きのプリセット（接頭辞 pf-）。説明は ../PRESET.md
+ * 使い方: class="pf-sway" の要素に .is-on を足すと、上の端を支点に左右へ揺れ続ける（往復）。rotate の個別プロパティで書くので、出現の transform とぶつからない */
+.pf-sway {
+  --pf-dur: 2.4s;
+  --pf-angle: 4deg;
+  --pf-delay: 0ms;
+  transform-origin: 50% 0;
+}
+.pf-sway.is-on {
+  animation: pf-sway var(--pf-dur) ease-in-out var(--pf-delay) infinite alternate;
+}
+@keyframes pf-sway {
+  from { rotate: calc(var(--pf-angle) * -1); }
+  to   { rotate: var(--pf-angle); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-sway, .pf-sway.is-on { animation: none; rotate: none; }
+}

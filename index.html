@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>動きの見本帳</title>
+<meta name="robots" content="noindex,nofollow">
+<!-- 自動生成（tools/build_anim_index.py）。手で直さない -->
+<style>
+:root {
+  --color-ink: #1b2430; --color-main: #24364f; --color-main-2: #4a6283; --color-accent: #e8792f; --color-accent-2: #d9611c;
+  --color-base: #ffffff; --color-pale: #eef1f5; --color-line: #c9d1dc; --color-on-dark: #ffffff; --color-shadow: rgb(13 26 51 / 0.18);
+  --font-body: "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--color-pale); color: var(--color-ink); font-family: var(--font-body); line-height: 1.7; }
+header { padding: 28px 16px 8px; max-width: 1100px; margin: 0 auto; }
+h1 { margin: 0; font-size: 26px; color: var(--color-main); }
+header p { margin: 6px 0 0; font-size: 14px; color: var(--color-main-2); }
+.filters { max-width: 1100px; margin: 0 auto; padding: 12px 16px; display: grid; gap: 8px; }
+.filters .row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.filters .lab { font-size: 13px; font-weight: 700; color: var(--color-main-2); width: 5em; }
+.chip { font: inherit; font-size: 13px; border: 1px solid var(--color-line); background: var(--color-base); color: var(--color-main); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--color-main); color: var(--color-on-dark); border-color: var(--color-main); }
+main { max-width: 1100px; margin: 0 auto; padding: 8px 16px 140px; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.card { background: var(--color-base); border-radius: 12px; box-shadow: 0 2px 10px var(--color-shadow); overflow: hidden; display: flex; flex-direction: column; border: 2px solid transparent; }
+.card.sel { border-color: var(--color-accent); }
+.card[hidden] { display: none; }
+.view { position: relative; aspect-ratio: 3 / 2; background: var(--color-pale); }
+.view iframe, .view img { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: contain; background: var(--color-pale); }
+.tabs { display: flex; gap: 4px; padding: 8px 12px 0; }
+.tab { font: inherit; font-size: 12px; border: 1px solid var(--color-line); background: var(--color-base); border-radius: 6px; padding: 2px 10px; cursor: pointer; color: var(--color-main); }
+.tab[aria-pressed="true"] { background: var(--color-pale); font-weight: 700; }
+.body { padding: 10px 14px 14px; display: grid; gap: 6px; }
+.body h2 { margin: 0; font-size: 18px; color: var(--color-main); font-family: ui-monospace, Menlo, monospace; }
+.body .desc { margin: 0; font-size: 14px; }
+.tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.tag { font-size: 12px; padding: 1px 8px; border-radius: 999px; background: var(--color-pale); color: var(--color-main); }
+.tag.g { background: var(--color-main); color: var(--color-on-dark); }
+.src { font-size: 12px; color: var(--color-main-2); margin: 0; }
+.pick { display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 14px; font-weight: 700; cursor: pointer; }
+.pick input { width: 20px; height: 20px; accent-color: var(--color-accent); }
+.apply { display: grid; gap: 6px; margin-top: 6px; padding-top: 8px; border-top: 1px dashed var(--color-line); }
+.apply .mode { font-size: 12px; color: var(--color-main-2); margin: 0; }
+.apply .f { display: grid; gap: 2px; font-size: 12px; color: var(--color-main-2); }
+.apply input, .apply select { font: inherit; font-size: 13px; padding: 5px 8px; border: 1px solid var(--color-line); border-radius: 6px; width: 100%; background: var(--color-base); color: var(--color-ink); }
+.apply .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.apply .btns { display: flex; flex-wrap: wrap; gap: 6px; }
+.apply button { font: inherit; font-size: 13px; font-weight: 700; border: 1px solid var(--color-main); background: var(--color-base); color: var(--color-main); border-radius: 999px; padding: 5px 14px; cursor: pointer; }
+.apply button.go { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-on-dark); }
+.apply button:disabled { opacity: .5; cursor: default; }
+.apply pre { margin: 0; padding: 8px; background: var(--color-pale); border-radius: 6px; font-size: 12px; line-height: 1.5; white-space: pre-wrap; word-break: break-all; max-height: 220px; overflow: auto; }
+.apply pre.ng { background: #fde8e6; }
+.badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 1px 10px; border-radius: 999px; background: var(--color-pale); color: var(--color-main-2); margin-left: 8px; vertical-align: middle; }
+.badge.local { background: var(--color-accent); color: var(--color-on-dark); }
+.bar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--color-main); color: var(--color-on-dark); padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; box-shadow: 0 -2px 12px var(--color-shadow); }
+.bar button { font: inherit; font-weight: 700; border: 0; border-radius: 999px; padding: 8px 20px; background: var(--color-accent); color: var(--color-on-dark); cursor: pointer; }
+.bar button:disabled { opacity: .5; cursor: default; }
+.bar .note { font-size: 13px; }
+.bar textarea { width: 100%; max-width: 900px; height: 90px; font: inherit; font-size: 13px; display: none; }
+.empty { grid-column: 1 / -1; text-align: center; color: var(--color-main-2); padding: 40px 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>動きの見本帳<span class="badge" id="modebadge">公開モード</span></h1>
+  <p id="lead">動きを選び、カードの欄に案件名・ページ・適用箇所を書いて、指示文かコマンドをコピーできます。（自動生成・手で直さない）</p>
+</header>
+<div class="filters" id="filters"></div>
+<main id="grid"></main>
+<div class="bar">
+  <span class="note" id="count">0 件選択中</span>
+  <button id="copy" disabled>選んだものをコピー（指示文）</button>
+  <button id="copycmd" disabled>選んだものをコピー（コマンド）</button>
+  <textarea id="fallback" readonly aria-label="コピー用のテキスト"></textarea>
+</div>
+<script>
+var PRESETS = [{"name": "bounce-in", "genres": ["登場"], "textures": ["バウンス"], "source": "りょうさん（Octa 実装） ／ kit 基本セット（v2.9）", "desc": "上から落ちて着地し、数回小さく跳ねて止まる。楽しく、少しコミカル", "params": [["--pf-dur", "900ms"], ["--pf-drop", "80px"], ["--pf-delay", "0ms"]], "preview": "preview.gif", "capture": "", "demo": true}, {"name": "card-slap", "genres": ["登場"], "textures": ["貼り付け", "バウンス"], "source": "りょうさん（Octa 実装） ／ 青空交通 / motion.css:25（card-slap）", "desc": "大きめの状態から傾いて「ぺたっ」と貼られ、影がぎゅっと縮む。シールやメモを貼った手触り", "params": [["--pf-dur", "560ms"], ["--pf-delay", "380ms"], ["--pf-from-scale", "1.22"], ["--pf-from-rotate", "5deg"], ["--pf-ink", "#1a1a2e"], ["--pf-shadow", "4px 5px 0"]], "preview": "preview.gif", "capture": "capture.gif", "demo": true}, {"name": "fade-in", "genres": ["登場"], "textures": ["フェード"], "source": "りょうさん（Octa 実装） ／ kit 基本セット（v2.9）", "desc": "その場でふわっと現れる。位置が動かないので、主張せず自然に目に入る", "params": [["--pf-dur", "600ms"], ["--pf-delay", "0ms"]], "preview": "preview.gif", "capture": "", "demo": true}, {"name": "fade-out-up", "genres": ["退場"], "textures": ["フェード", "スライド"], "source": "りょうさん（Octa 実装） ／ kit 基本セット（v2.9）", "desc": "上へ少し持ち上がりながら静かに消える。fade-up の逆再生のような、控えめな退場", "params": [["--pf-dur", "500ms"], ["--pf-rise", "24px"], ["--pf-delay", "0ms"]], "preview": "preview.gif", "capture": "", "demo": true}, {"name": "fade-up", "genres": ["登場"], "textures": ["フェード", "スライド"], "source": "kit 土台 ／ base/base.css（.rv → .is-on）", "desc": "下から静かに浮かび上がる、落ち着いた標準の出方。主張せず、読ませる", "params": [["--pf-dur", "600ms"], ["--pf-rise", "32px"], ["--pf-delay", "0ms"]], "preview": "preview.gif", "capture": "capture.gif", "demo": true}, {"name": "float", "genres": ["ループ"], "textures": ["揺れ"], "source": "りょうさん（Octa 実装） ／ kit 基本セット（v2.9）", "desc": "空気中に浮かぶように、上下 6px・傾き ±1.5°・3.6 秒で常にふわふわ往復する。軽やかで柔らかい", "params": [["--pf-dur", "3.6s"], ["--pf-amp", "6px"], ["--pf-tilt", "1.5deg"], ["--pf-delay", "0ms"]], "preview": "preview.gif", "capture": "", "demo": true}, {"name": "jelly", "genres": ["強調"], "textures": ["ぷよぷよ"], "source": "りょうさん（Octa 実装） ／ kit 基本セット（v2.9）", "desc": "縦横に潰れたり伸びたりしながら揺れて静まる、ゼリーのような弾力。目を引き、親しみが出る", "params": [["--pf-dur", "800ms"], ["--pf-power", "1"], ["--pf-delay", "0ms"]], "preview": "preview.gif", "capture": "", "demo": true}, {"name": "mask-reveal", "genres": ["登場"], "textures": ["ワイプ"], "source": "りょうさん（Octa 実装） ／ kit 基本セット（v2.9）", "desc": "色の帯が左から右へ払うように通り過ぎ、そのあとに中身が現れる。切れ味があり、編集的", "params": [["--pf-dur", "700ms"], ["--pf-bar", "var(--color-accent, #e8792f)"], ["--pf-delay", "0ms"]], "preview": "preview.gif", "capture": "", "demo": true}, {"name": "pop", "genres": ["登場", "強調"], "textures": ["ポップ"], "source": "りょうさん（Octa 実装） ／ kit 基本セット（v2.9）", "desc": "小さい状態から勢いよく大きく出て、少し行き過ぎてから落ち着く。明るく元気な「ぽん」", "params": [["--pf-dur", "500ms"], ["--pf-from", "0.5"], ["--pf-over", "1.12"], ["--pf-delay", "0ms"]], "preview": "preview.gif", "capture": "", "demo": true}, {"name": "shake", "genres": ["強調"], "textures": ["揺れ"], "source": "りょうさん（Octa 実装） ／ kit 基本セット（v2.9）", "desc": "左右に素早く震えて止まる。「注意」「違う」「見て」を伝える、短く強い合図", "params": [["--pf-dur", "500ms"], ["--pf-amp", "8px"], ["--pf-delay", "0ms"]], "preview": "preview.gif", "capture": "", "demo": true}, {"name": "slide-left", "genres": ["登場"], "textures": ["スライド", "フェード"], "source": "りょうさん（Octa 実装） ／ kit 基本セット（v2.9）", "desc": "左から横に滑って入る。流れが生まれ、並んだ要素を「順に読ませる」ときに向く", "params": [["--pf-dur", "600ms"], ["--pf-dist", "48px"], ["--pf-delay", "0ms"]], "preview": "preview.gif", "capture": "", "demo": true}, {"name": "slide-right", "genres": ["登場"], "textures": ["スライド", "フェード"], "source": "りょうさん（Octa 実装） ／ kit 基本セット（v2.9）", "desc": "右から横に滑って入る。流れが生まれ、並んだ要素を「順に読ませる」ときに向く", "params": [["--pf-dur", "600ms"], ["--pf-dist", "48px"], ["--pf-delay", "0ms"]], "preview": "preview.gif", "capture": "", "demo": true}, {"name": "stagger", "genres": ["登場"], "textures": ["フェード", "スライド"], "source": "りょうさん（Octa 実装） ／ kit 基本セット（v2.9）", "desc": "子要素が 1 つずつ時間差で下から出そろう。リストやカード列が「順に読める」リズムになる", "params": [["--pf-dur", "500ms"], ["--pf-step", "100ms"], ["--pf-rise", "24px"], ["--pf-delay", "0ms"]], "preview": "preview.gif", "capture": "", "demo": true}, {"name": "sway", "genres": ["ループ"], "textures": ["揺れ"], "source": "りょうさん（Octa 実装） ／ kit 基本セット（v2.9）", "desc": "上の一点を支点に、看板や吊り飾りのようにゆっくり左右へ揺れ続ける。穏やかな生活感", "params": [["--pf-dur", "2.4s"], ["--pf-angle", "4deg"], ["--pf-delay", "0ms"]], "preview": "preview.gif", "capture": "", "demo": true}, {"name": "wipe", "genres": ["遷移"], "textures": ["ワイプ"], "source": "りょうさん（Octa 実装） ／ kit 基本セット（v2.9）", "desc": "色の面が横切って画面を覆い、その裏で場面が入れ替わって、そのまま抜けていく。きっぱりした切り替え", "params": [["--pf-dur", "900ms"], ["--pf-bar", "var(--color-main, #24364f)"], ["--pf-delay", "0ms"]], "preview": "preview.gif", "capture": "", "demo": true}, {"name": "word-drop", "genres": ["登場", "強調"], "textures": ["ぷよぷよ", "バウンス"], "source": "りょうさん（Octa 実装） ／ 青空交通 / motion.css:12（w-drop）", "desc": "見出しが 1 語ずつ上から落ちてきて、着地でぽよんと潰れて弾む。元気・親しみ・遊び心", "params": [["--pf-dur", "720ms"], ["--pf-step", "130ms"], ["--pf-delay", "150ms"], ["--pf-drop", "140%"]], "preview": "preview.gif", "capture": "capture.gif", "demo": true}, {"name": "zoom-in", "genres": ["登場"], "textures": ["ズーム", "フェード"], "source": "りょうさん（Octa 実装） ／ kit 基本セット（v2.9）", "desc": "少し小さい状態から等倍へ寄ってくる。写真や図が「手前に来る」ように見え、奥行きが出る", "params": [["--pf-dur", "600ms"], ["--pf-from", "0.8"], ["--pf-delay", "0ms"]], "preview": "preview.gif", "capture": "", "demo": true}];
+var state = { genre: null, texture: null, selected: {}, where: {}, f: {} };
+var MODE = 'public', PROJECTS = [], applyHosts = [];
+function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+function uniq(key) { var s = []; PRESETS.forEach(function (p) { p[key].forEach(function (t) { if (s.indexOf(t) < 0) s.push(t); }); }); return s; }
+
+function buildFilters() {
+  var box = document.getElementById('filters');
+  [['ジャンル', 'genre', 'genres'], ['質感', 'texture', 'textures']].forEach(function (g) {
+    var row = el('div', 'row'); row.appendChild(el('span', 'lab', g[0]));
+    var all = el('button', 'chip', 'すべて'); all.setAttribute('aria-pressed', 'true'); row.appendChild(all);
+    var chips = [all];
+    all.onclick = function () { state[g[1]] = null; sync(); };
+    uniq(g[2]).forEach(function (t) {
+      var b = el('button', 'chip', t); b.setAttribute('aria-pressed', 'false'); chips.push(b); row.appendChild(b);
+      b.onclick = function () { state[g[1]] = state[g[1]] === t ? null : t; sync(); };
+    });
+    row.chips = chips; g.push(row); box.appendChild(row);
+    buildFilters.rows = (buildFilters.rows || []).concat([[g[1], row]]);
+  });
+}
+function sync() {
+  buildFilters.rows.forEach(function (r) {
+    r[1].chips.forEach(function (c, i) { c.setAttribute('aria-pressed', String(i === 0 ? state[r[0]] === null : state[r[0]] === c.textContent)); });
+  });
+  var shown = 0;
+  PRESETS.forEach(function (p, i) {
+    var ok = (!state.genre || p.genres.indexOf(state.genre) >= 0) && (!state.texture || p.textures.indexOf(state.texture) >= 0);
+    document.getElementById('card-' + i).hidden = !ok; if (ok) shown++;
+  });
+  document.getElementById('empty').hidden = shown > 0;
+}
+function splitSet(v) { return String(v || '').split(/\s+/).filter(Boolean); }
+function fld(p) { return state.f[p.name] || (state.f[p.name] = { project: '', page: '', set: '' }); }
+function shq(v) { return '"' + String(v).replace(/(["\\$`])/g, '\\$1') + '"'; }
+// 指示文（AI に貼る）
+function lineFor(p) {
+  var f = fld(p), w = state.where[p.name] || '', sets = splitSet(f.set);
+  var s = '動きプリセット「' + p.name + '」を' + (f.project ? '案件 ' + f.project + ' の' : '案件の') + (f.page ? ' ' + f.page + ' に' : 'ページに') + '適用してください。';
+  s += '適用箇所: ' + w + '。';
+  if (sets.length) s += 'パラメータ: ' + sets.join(' ') + '。';
+  s += '（animations/' + p.name + '/PRESET.md と web/ を読んで再現。記録と CSS の取り込みは tools/apply_preset.sh）';
+  return s;
+}
+// コマンド（手元で実行する）
+function cmdFor(p) {
+  var f = fld(p), w = state.where[p.name] || '', sets = splitSet(f.set);
+  var c = 'bash tools/apply_preset.sh ' + (f.project || '<project>') + ' ' + (f.page || '<page>') + ' ' + p.name;
+  c += ' --at ' + shq(w || '適用箇所');
+  if (sets.length) c += ' --set ' + sets.join(' ');
+  return c;
+}
+function pickedText(fn) { return PRESETS.filter(function (p) { return state.selected[p.name]; }).map(fn).join('\n'); }
+function updateBar() {
+  var n = PRESETS.filter(function (p) { return state.selected[p.name]; }).length;
+  document.getElementById('count').textContent = n + ' 件選択中';
+  document.getElementById('copy').disabled = n === 0;
+  document.getElementById('copycmd').disabled = n === 0;
+  document.getElementById('fallback').style.display = 'none';
+}
+function showView(view, p, mode) {
+  view.textContent = '';
+  if (mode === 'capture') { var im = el('img'); im.src = p.name + '/' + p.capture; im.alt = p.name + ' 実サイトでの使用例'; view.appendChild(im); return; }
+  if (!p.demo) { if (p.preview) { var g = el('img'); g.src = p.name + '/' + p.preview; view.appendChild(g); } return; }
+  var f = el('iframe'); f.title = p.name + ' 見本'; f.loading = 'lazy'; f.setAttribute('scrolling', 'no');
+  var loaded = false;
+  f.onload = function () { loaded = true; };
+  f.src = p.name + '/web/demo.html';
+  view.appendChild(f);
+  // iframe が使えない環境では 3 秒たっても読み込みが完了しないので、preview.gif に差し替える
+  setTimeout(function () { if (!loaded && p.preview) { view.textContent = ''; var g2 = el('img'); g2.src = p.name + '/' + p.preview; g2.alt = p.name + ' 見本'; view.appendChild(g2); } }, 3000);
+}
+function buildCards() {
+  var grid = document.getElementById('grid');
+  PRESETS.forEach(function (p, i) {
+    var c = el('article', 'card'); c.id = 'card-' + i;
+    var view = el('div', 'view');
+    if (p.capture) {
+      var tabs = el('div', 'tabs'), t1 = el('button', 'tab', '見本'), t2 = el('button', 'tab', '実サイト');
+      t1.setAttribute('aria-pressed', 'true'); t2.setAttribute('aria-pressed', 'false');
+      t1.onclick = function () { t1.setAttribute('aria-pressed', 'true'); t2.setAttribute('aria-pressed', 'false'); showView(view, p, 'demo'); };
+      t2.onclick = function () { t2.setAttribute('aria-pressed', 'true'); t1.setAttribute('aria-pressed', 'false'); showView(view, p, 'capture'); };
+      tabs.appendChild(t1); tabs.appendChild(t2); c.appendChild(tabs);
+    }
+    c.appendChild(view);
+    var b = el('div', 'body');
+    b.appendChild(el('h2', null, p.name));
+    b.appendChild(el('p', 'desc', p.desc));
+    var tags = el('div', 'tags');
+    p.genres.forEach(function (t) { tags.appendChild(el('span', 'tag g', t)); });
+    p.textures.forEach(function (t) { tags.appendChild(el('span', 'tag', t)); });
+    b.appendChild(tags);
+    b.appendChild(el('p', 'src', '出典: ' + p.source));
+    var lab = el('label', 'pick'), cb = el('input'); cb.type = 'checkbox';
+    cb.onchange = function () { state.selected[p.name] = cb.checked; c.classList.toggle('sel', cb.checked); updateBar(); };
+    lab.appendChild(cb); lab.appendChild(document.createTextNode('選ぶ')); b.appendChild(lab);
+    var host = el('div', 'apply'); b.appendChild(host); applyHosts.push([p, host]);
+    c.appendChild(b); grid.appendChild(c);
+    // 画面に入ったものから見本を動かす（file:// でも動く）
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); showView(view, p, 'demo'); } }, { rootMargin: '200px' });
+      io.observe(c);
+    } else showView(view, p, 'demo');
+  });
+  var em = el('p', 'empty', '条件に合うプリセットはまだありません'); em.id = 'empty'; em.hidden = true; grid.appendChild(em);
+}
+function copyText(text, okMsg) {
+  var fb = document.getElementById('fallback'), note = document.getElementById('count');
+  function fallback() { fb.value = text; fb.style.display = 'block'; fb.focus(); fb.select(); note.textContent = '自動でコピーできないため、下の文を選んでコピーしてください'; }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function () { fb.style.display = 'none'; note.textContent = '✓ ' + okMsg; }, fallback);
+  } else fallback();
+}
+document.getElementById('copy').onclick = function () { var t = pickedText(lineFor); copyText(t, 'コピーしました（指示文 ' + t.split('\n').length + ' 件）'); };
+document.getElementById('copycmd').onclick = function () { var t = pickedText(cmdFor); copyText(t, 'コピーしました（コマンド ' + t.split('\n').length + ' 件）'); };
+
+function labeled(text, input) { var l = el('label', 'f', text); l.appendChild(input); return l; }
+function textInput(ph, val, fn, label) { var i = el('input'); i.type = 'text'; i.placeholder = ph; i.value = val || ''; i.setAttribute('aria-label', label); i.oninput = function () { fn(i.value); }; return i; }
+function renderPublic(p, host) {
+  var f = fld(p);
+  host.appendChild(el('p', 'mode', '公開モード：案件名・ページ・適用箇所を書いて、文をコピーして使います'));
+  var r = el('div', 'row2');
+  r.appendChild(labeled('案件名', textInput('案件のフォルダ名', f.project, function (v) { f.project = v; }, p.name + ' の案件名')));
+  r.appendChild(labeled('ページ', textInput('p1・p2 …', f.page, function (v) { f.page = v; }, p.name + ' のページ')));
+  host.appendChild(r);
+  host.appendChild(labeled('適用箇所', textInput('例: p2 の見出し', state.where[p.name], function (v) { state.where[p.name] = v; }, p.name + ' の適用箇所')));
+  host.appendChild(labeled('パラメータ（任意）', textInput('例: --pf-dur=0.5s --pf-delay=0.1s', f.set, function (v) { f.set = v; }, p.name + ' のパラメータ')));
+  var bt = el('div', 'btns'), b1 = el('button', null, '指示文をコピー'), b2 = el('button', null, 'コマンドをコピー');
+  b1.onclick = function () { copyText(lineFor(p), '指示文をコピーしました'); };
+  b2.onclick = function () { copyText(cmdFor(p), 'コマンドをコピーしました'); };
+  bt.appendChild(b1); bt.appendChild(b2); host.appendChild(bt);
+}
+function renderLocal(p, host) {
+  var f = fld(p);
+  host.appendChild(el('p', 'mode', 'ローカルモード：まず確認（dry-run）→ 内容を見てから反映'));
+  var selP = el('select'), selG = el('select');
+  selP.setAttribute('aria-label', p.name + ' の案件'); selG.setAttribute('aria-label', p.name + ' のページ');
+  function fillPages() {
+    selG.textContent = '';
+    var pr = PROJECTS.filter(function (x) { return x.name === selP.value; })[0];
+    var pages = pr ? pr.pages : [];
+    if (!pages.length) { var o = el('option', null, pr && !pr.hasMotionColumn ? '（DNA.md に動き列なし）' : '（ページなし）'); o.value = ''; selG.appendChild(o); }
+    pages.forEach(function (g) { var o = el('option', null, g); o.value = g; selG.appendChild(o); });
+    f.page = selG.value;
+  }
+  var o0 = el('option', null, '案件を選ぶ'); o0.value = ''; selP.appendChild(o0);
+  PROJECTS.forEach(function (x) { var o = el('option', null, x.name); o.value = x.name; selP.appendChild(o); });
+  selP.value = f.project || ''; fillPages(); if (f.page) selG.value = f.page; f.page = selG.value;
+  var out = el('pre'); out.hidden = true;
+  var bGo = el('button', 'go', 'この内容で反映'); bGo.hidden = true;
+  var bDry = el('button', null, '反映');
+  function reset() { out.hidden = true; bGo.hidden = true; out.className = ''; }
+  selP.onchange = function () { f.project = selP.value; fillPages(); reset(); };
+  selG.onchange = function () { f.page = selG.value; reset(); };
+  var r = el('div', 'row2');
+  r.appendChild(labeled('案件', selP)); r.appendChild(labeled('ページ', selG));
+  host.appendChild(r);
+  host.appendChild(labeled('適用箇所', textInput('例: p2 の見出し', state.where[p.name], function (v) { state.where[p.name] = v; reset(); }, p.name + ' の適用箇所')));
+  host.appendChild(labeled('パラメータ（任意）', textInput('例: --pf-dur=0.5s', f.set, function (v) { f.set = v; reset(); }, p.name + ' のパラメータ')));
+  function run(dry) {
+    if (!selP.value || !selG.value) { out.hidden = false; out.className = 'ng'; out.textContent = '案件とページを選んでください'; return; }
+    out.hidden = false; out.className = ''; out.textContent = dry ? '確認中…' : '反映中…'; bDry.disabled = bGo.disabled = true;
+    fetch('api/apply', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ project: selP.value, page: selG.value, name: p.name, at: state.where[p.name] || '', set: splitSet(f.set), dryRun: dry }) })
+      .then(function (res) { return res.json().then(function (j) { return { status: res.status, j: j }; }); })
+      .then(function (x) {
+        var ok = x.status === 200 && x.j.ok;
+        out.className = ok ? '' : 'ng';
+        out.textContent = x.j.output || x.j.error || ('失敗しました（' + x.status + '）');
+        bGo.hidden = !(ok && dry);
+        if (ok && !dry) out.textContent = '【反映しました】\n' + out.textContent;
+      })
+      .catch(function () { out.className = 'ng'; out.textContent = 'サーバーに届きませんでした'; })
+      .then(function () { bDry.disabled = bGo.disabled = false; });
+  }
+  bDry.onclick = function () { run(true); }; bGo.onclick = function () { run(false); };
+  var bt = el('div', 'btns'); bt.appendChild(bDry); bt.appendChild(bGo); host.appendChild(bt); host.appendChild(out);
+}
+function renderApplies() {
+  applyHosts.forEach(function (h) { h[1].textContent = ''; (MODE === 'local' ? renderLocal : renderPublic)(h[0], h[1]); });
+  var bd = document.getElementById('modebadge');
+  bd.textContent = MODE === 'local' ? 'ローカルモード' : '公開モード'; bd.className = MODE === 'local' ? 'badge local' : 'badge';
+  document.getElementById('lead').textContent = MODE === 'local'
+    ? '手元の案件に反映できます。案件・ページ・適用箇所を選び、「反映」で内容を確かめてから「この内容で反映」を押します。'
+    : '動きを選び、カードの欄に案件名・ページ・適用箇所を書いて、指示文かコマンドをコピーできます。';
+}
+function detectMode() {
+  if (!/^https?:$/.test(location.protocol) || !window.fetch) return Promise.resolve(false);
+  return fetch('api/projects', { cache: 'no-store' }).then(function (r) {
+    if (!r.ok || (r.headers.get('content-type') || '').indexOf('application/json') < 0) throw new Error('no api');
+    return r.json();
+  }).then(function (j) {
+    if (!j || j.ok !== true || !Array.isArray(j.projects)) throw new Error('bad');
+    PROJECTS = j.projects; return true;
+  }).catch(function () { return false; });
+}
+buildFilters(); buildCards(); sync(); updateBar(); renderApplies();
+detectMode().then(function (local) { if (local) { MODE = 'local'; renderApplies(); } });
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+/* zoom-in — 動きのプリセット（接頭辞 pf-）。説明は ../PRESET.md
+ * 使い方: class="pf-zoom-in" の要素に .is-on を足すと、小さい状態から等倍へ寄って出る */
+.pf-zoom-in {
+  --pf-dur: 600ms;
+  --pf-from: 0.8;
+  --pf-delay: 0ms;
+  --pf-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 0;
+  transform: scale(var(--pf-from));
+}
+.pf-zoom-in.is-on {
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--pf-dur) ease var(--pf-delay), transform var(--pf-dur) var(--pf-ease) var(--pf-delay);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-zoom-in, .pf-zoom-in.is-on { opacity: 1; transform: none; transition: none; }
+}
